@@ -1,3 +1,18 @@
+# The only part written by human(s)
+
+As an experiment we've tried timeboxing 1h, taking cursor, chocolate cakes with tea, and pushing them to their limits.
+We sat back, relaxed, and gave it a simple prompt:
+
+> I want you to build an e-commerce shop for me with my merch. I will be selling mostly t-shirts of different sizes and colors. We need to be able to pick a color and a size and then proceed to checkout. I want to have a backend with a DB where I would store available t-shirts, cutomers data, etc. All of this should be in next.js and I want to be able to run the project immediately after your completion. Please provide all neccessary commands to run (for example to set up db, etc.) and generate needed code
+
+Below is what we got:
+
+https://github.com/user-attachments/assets/d2c2b57f-53e3-4056-a0ad-4e036cd7cbe2
+
+Co-vibe-coder: [@nikijaz](https://github.com/nikijaz)
+
+The description below this point is fully AI-generated. Enjoy!
+
 # Vibe Code E-Commerce Shop
 
 A modern e-commerce shop built with Next.js, featuring t-shirt sales with color and size selection, authentication, and an admin panel.

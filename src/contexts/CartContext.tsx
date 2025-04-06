@@ -95,7 +95,6 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
           item.color === action.payload.color &&
           item.size === action.payload.size
         ) {
-          const quantityDiff = action.payload.quantity - item.quantity;
           return { ...item, quantity: action.payload.quantity };
         }
         return item;

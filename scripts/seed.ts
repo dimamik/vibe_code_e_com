@@ -1,92 +1,79 @@
 import { prisma } from "../src/lib/prisma";
-import bcrypt from "bcryptjs";
 
-const sampleTShirts = [
+const sampleProducts = [
   {
-    name: "Classic White T-Shirt",
-    description: "A timeless white t-shirt made from 100% organic cotton.",
+    name: "Classic Black T-Shirt",
+    description:
+      "A timeless black t-shirt made from 100% premium cotton. Perfect for any casual occasion.",
     price: 29.99,
     image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-    colors: ["white", "black", "gray"],
+      "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=1000",
+    colors: ["Black", "White", "Gray"],
     sizes: ["S", "M", "L", "XL"],
   },
   {
-    name: "Vintage Black T-Shirt",
-    description: "A soft black t-shirt with a vintage wash finish.",
+    name: "Vintage Graphic Tee",
+    description:
+      "Retro-inspired graphic t-shirt featuring a unique vintage design. Made from soft, breathable cotton blend.",
     price: 34.99,
     image:
-      "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-    colors: ["black", "navy", "charcoal"],
-    sizes: ["S", "M", "L", "XL"],
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1000",
+    colors: ["Navy", "Burgundy", "Forest Green"],
+    sizes: ["XS", "S", "M", "L", "XL"],
   },
   {
-    name: "Striped Blue T-Shirt",
-    description: "A comfortable striped t-shirt perfect for casual wear.",
+    name: "Essential Striped T-Shirt",
+    description:
+      "Classic striped pattern t-shirt perfect for a casual yet stylish look. Made from lightweight cotton.",
+    price: 24.99,
+    image:
+      "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1000",
+    colors: ["Blue/White", "Black/White", "Red/Navy"],
+    sizes: ["S", "M", "L"],
+  },
+  {
+    name: "Premium V-Neck Tee",
+    description:
+      "Sophisticated v-neck t-shirt crafted from premium cotton. Features a modern slim fit design.",
+    price: 32.99,
+    image:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000",
+    colors: ["White", "Black", "Navy", "Gray"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+  },
+  {
+    name: "Urban Street T-Shirt",
+    description:
+      "Contemporary street-style t-shirt with modern cut and premium fabric. Perfect for urban fashion.",
     price: 39.99,
     image:
-      "https://images.unsplash.com/photo-1523381294911-8d3cead13475?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-    colors: ["blue", "navy", "white"],
-    sizes: ["S", "M", "L", "XL"],
-  },
-  {
-    name: "Graphic Print T-Shirt",
-    description: "A trendy t-shirt featuring a unique graphic print.",
-    price: 44.99,
-    image:
-      "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-    colors: ["white", "black", "gray"],
-    sizes: ["S", "M", "L", "XL"],
-  },
-  {
-    name: "Oversized T-Shirt",
-    description: "A relaxed fit t-shirt for ultimate comfort.",
-    price: 49.99,
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-    colors: ["black", "white", "beige"],
-    sizes: ["M", "L", "XL", "XXL"],
+      "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1000",
+    colors: ["Black", "White", "Olive", "Sand"],
+    sizes: ["XS", "S", "M", "L", "XL"],
   },
 ];
 
 async function main() {
-  try {
-    // Create admin user
-    const hashedPassword = await bcrypt.hash("admin123", 10);
-    await prisma.user.upsert({
-      where: { email: "dima@example.com" },
-      update: {
-        isAdmin: true,
-        password: hashedPassword,
-      },
-      create: {
-        email: "dima@example.com",
-        name: "Admin User",
-        password: hashedPassword,
-        isAdmin: true,
-      },
+  console.log("Starting to seed products...");
+
+  // First, delete all existing products
+  await prisma.product.deleteMany({});
+
+  // Then create new products
+  for (const product of sampleProducts) {
+    await prisma.product.create({
+      data: product,
     });
-
-    // Add sample t-shirts
-    for (const tshirt of sampleTShirts) {
-      await prisma.product.create({
-        data: {
-          name: tshirt.name,
-          description: tshirt.description,
-          price: tshirt.price,
-          image: tshirt.image,
-          colors: tshirt.colors,
-          sizes: tshirt.sizes,
-        },
-      });
-    }
-
-    console.log("Database seeded successfully!");
-  } catch (error) {
-    console.error("Error seeding database:", error);
-  } finally {
-    await prisma.$disconnect();
   }
+
+  console.log("Seeding completed successfully!");
 }
 
-main();
+main()
+  .catch((error) => {
+    console.error("Error seeding products:", error);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
